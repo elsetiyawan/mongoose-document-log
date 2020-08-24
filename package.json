@@ -1,0 +1,24 @@
+{
+  "name": "mongoose-document-log",
+  "version": "1.0.0",
+  "description": "A plugin for mongoose to record document change",
+  "main": "mongoose-log.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elsetiyawan/mongoose-document-log.git"
+  },
+  "keywords": [
+    "mongoose",
+    "mongodb",
+    "mongo",
+    "log",
+    "audit",
+    "log"
+  ],
+  "author": "eL Setiyawan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elsetiyawan/mongoose-document-log/issues"
+  },
+  "homepage": "https://github.com/elsetiyawan/mongoose-document-log#readme"
+}
