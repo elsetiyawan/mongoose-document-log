@@ -7,18 +7,25 @@ let dataToSave = {
 };
 
 module.exports = function historyPlugin(schema) {
-  schema.pre("save", function (next) {
+  schema.pre("save", async function (next) {
     this.wasNew = this.isNew;
+    if (this.isNew) {
+      dataToSave.data.before = "";
+    } else {
+      dataToSave.data.before = await this.constructor.findOne({
+        _id: this._id,
+      });
+    }
     next();
   });
 
-  schema.post("save", function () {
+  schema.post("save", async function () {
     dataToSave.collectionName = this.constructor.modelName;
     dataToSave.operation = "save";
     if (this.wasNew) {
-      dataToSave.data.new = this;
+      dataToSave.data.after = this;
     } else {
-      dataToSave.data.update = this;
+      dataToSave.data.after = this;
     }
     saveData();
   });
@@ -35,8 +42,6 @@ module.exports = function historyPlugin(schema) {
   });
 
   schema.post("findOneAndUpdate", async function () {
-    dataToSave.collectionName = this.mongooseCollection.collectionName;
-    dataToSave.operation = this.op;
     if (dataToSave.data.before && dataToSave.data.before._id) {
       await this.find(dataToSave.data.before._id)
         .cursor()
@@ -63,8 +68,6 @@ module.exports = function historyPlugin(schema) {
   });
 
   schema.post("updateOne", async function () {
-    dataToSave.collectionName = this.mongooseCollection.collectionName;
-    dataToSave.operation = this.op;
     if (dataToSave.data.before && dataToSave.data.before._id) {
       await this.find(dataToSave.data.before._id)
         .cursor()
@@ -91,8 +94,6 @@ module.exports = function historyPlugin(schema) {
   });
 
   schema.post("update", async function () {
-    dataToSave.collectionName = this.mongooseCollection.collectionName;
-    dataToSave.operation = this.op;
     if (dataToSave.data.before && dataToSave.data.before._id) {
       await this.find(dataToSave.data.before._id)
         .cursor()

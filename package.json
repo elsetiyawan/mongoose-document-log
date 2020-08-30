@@ -1,6 +1,6 @@
 {
   "name": "mongoose-document-log",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plugin for mongoose to record document change",
   "main": "mongoose-log.js",
   "repository": {
